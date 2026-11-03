@@ -44,3 +44,30 @@ small FSM around the slice mux, the 2D decoders, and the verification and write-
 `pass_idx`, and the slices are decoded in parallel by N copies of the 2D decoder. The decoder's error
 estimate is applied to a slice only if the corrected slice has zero syndromes. The accepted slices are
 then reassembled into the cube. Only lanes 0, 1 and N−1 are drawn. The dashed lines show control signals.*
+
+## Repository structure
+
+| Folder | Contents |
+|---|---|
+| [`2D_bch_datapath/`](2D_bch_datapath) | The 2D frequency-domain BCH decoder (Verilog), one subfolder per pipeline stage |
+| [`3d_datapath/`](3d_datapath) | The 3D top level that wraps N copies of the 2D decoder, plus its testbench |
+| [`all_hex_files/`](all_hex_files) | Lookup tables loaded with `$readmemh` (`dfft_*.hex`, `alpha_*.hex`, `poly_*.hex`) |
+| [`docs/`](docs) | Architecture diagram (PNG, SVG, TikZ source) |
+
+> **Simulation tip:** the hex files are opened by relative path. Run the simulator from a directory
+> that contains them (or copy `all_hex_files/*` next to your simulation), otherwise the tables load
+> as zeros or the run fails.
+
+### `3d_datapath/`
+
+| File | Top module | Description |
+|---|---|---|
+| `[top_3d.v]` | `top_3d` | 3D decoder. Splits the cube into N slices per pass, decodes them with N parallel `ccp_top` instances, applies a slice correction only if it passes the check, and writes the slices back. Ports: `clk, rst, start_3d, cube_in, done_3d, fail_3d, iters`. |
+| `[top_3d_alt.v]` | `top_3d_alt` | Same architecture, but a correction is accepted only if the corrected slice has all-zero syndromes (an extra `dffft_top` per slice) instead of an equality test. |
+| `[tb_3d.v]` | `tb_3d` | Testbench. Reads `cube_in.hex`, runs the decoder and prints `iters` and `fail_3d`. |
+
+### `2D_bch_datapath/`
+
+The top module is **`ccp_top`** (`ccp/ccp_top.v`). It takes one N × N slice `r_in` and, a fixed number of
+cycles after `start`, raises `done` with the estimated error pattern on `c_out`. Everything else is
+instantiated from it:
