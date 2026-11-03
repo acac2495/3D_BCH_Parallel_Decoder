@@ -133,13 +133,14 @@ module top_3d #(parameter N = 15, M = 4, T = 2, MAX_ITER = 100) (clk, rst, start
                             end
                         end
                     end
-                    state <= START;
-                end
-
-                START : begin       //initiating 2d decoding start
                     start_2d <= 1;
                     state <= WAIT;
                 end
+
+                /*START : begin      
+                    start_2d <= 1;
+                    state <= WAIT;
+                end*/
 
                 WAIT : begin        //waiting till done, then registering the 2d errors
                     start_2d <= 0;
