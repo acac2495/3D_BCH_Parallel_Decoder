@@ -71,4 +71,35 @@ The top module is **`ccp_top`** (`ccp/ccp_top.v`). It takes one N × N slice `r_
 cycles after `start`, raises `done` with the estimated error pattern on `c_out`. Everything else is
 instantiated from it:
 
-## Implementation Results
+## Implementation results
+
+Post-implementation results on a Xilinx Kintex-7 **xc7k325t** (speed grade −2), using Vivado 2025.2.
+
+### Resource utilization
+
+| Resource | Used | Available | Utilization |
+|---|---:|---:|---:|
+| Slice LUTs | 105,570 | 203,800 | 51.80 % |
+| Slice registers (FF) | 22,374 | 407,600 | 5.49 % |
+| Slices | 27,967 | 50,950 | 54.89 % |
+| Block RAM | 0 | 445 | 0 % |
+| DSP48 | 0 | 840 | 0 % |
+
+- The design is almost entirely combinational logic: LUTs are about 52 % of the device, flip-flops about 5 %.
+- No block RAM or DSP is used, so all lookup tables and Galois-field arithmetic are mapped to LUTs.
+- The top level uses 13 I/O pins: `clk`, `rst`, `start_3d` as inputs, and `done_3d`, `fail_3d`, `iters[7:0]` as outputs.
+  The cube data is not brought out to pins. 
+
+### Timing
+
+| Metric | Value |
+|---|---:|
+| Target clock period | 12 ns (83.3 MHz) |
+| Worst negative slack (setup) | +0.901 ns |
+| Worst hold slack | +0.058 ns |
+| Worst pulse-width slack | +5.358 ns |
+| Estimated max frequency | ≈ 90 MHz (1 / (12 − 0.901) ns) |
+
+All timing constraints are met at 12 ns. The maximum frequency is an estimate from the setup slack at this
+target, so it assumes the critical path would not change at a tighter constraint.
+Adding the syndrome-check blocks lowers the achievable frequency compared with the version without them.
