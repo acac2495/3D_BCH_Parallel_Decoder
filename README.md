@@ -30,3 +30,6 @@ and errors that one orientation cannot correct can be resolved by another.
 5. **Repeat.** The three orientations are applied in turn. A sweep that makes no correction means
    the cube is clean (`done_3d`); if the cube is still changing after `MAX_ITER` sweeps, the decoder
    stops with `fail_3d` set.
+
+The design is parameterized by [`N = 15`, `M = 4` (GF(2⁴)), `T = 2`], and the control logic is a
+small FSM around the slice mux, the 2D decoders, and the verification and write-back stages.
