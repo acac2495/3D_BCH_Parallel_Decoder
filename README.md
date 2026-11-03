@@ -11,3 +11,6 @@ into a decoder for **three-dimensional** data. A 15 × 15 × 15 binary cube is t
 2D slices, and each slice is decoded with the 2D frequency-domain decoder. The cube is cut along
 all three orientations (XY, XZ and YZ), so every bit is covered by one slice in each orientation
 and errors that one orientation cannot correct can be resolved by another.
+
+> A full implementation of the 2D BCH decoder that this project builds on can be found at
+> [acac2495/2D-BCH-Codes](https://github.com/acac2495/2D-BCH-Codes).
