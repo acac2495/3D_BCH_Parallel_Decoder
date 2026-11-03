@@ -70,3 +70,5 @@ then reassembled into the cube. Only lanes 0, 1 and N−1 are drawn. The dashed 
 The top module is **`ccp_top`** (`ccp/ccp_top.v`). It takes one N × N slice `r_in` and, a fixed number of
 cycles after `start`, raises `done` with the estimated error pattern on `c_out`. Everything else is
 instantiated from it:
+
+## Implementation Results
