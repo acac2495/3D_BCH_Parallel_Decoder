@@ -14,3 +14,19 @@ and errors that one orientation cannot correct can be resolved by another.
 
 > A full implementation of the 2D BCH decoder that this project builds on can be found at
 > [acac2495/2D-BCH-Codes](https://github.com/acac2495/2D-BCH-Codes).
+
+## How it works
+
+1. **Slice.** For the current orientation (`pass_idx` = XY, XZ or YZ), the cube is split into
+   N = 15 slices of 15 × 15 bits.
+2. **Decode in parallel.** N copies of the 2D decoder (`ccp_top`) run at the same time, one per
+   slice. Each decoder computes the 2D syndromes in the frequency domain, finds the row and
+   column error-locator polynomials with Berlekamp–Massey, recovers the remaining syndromes by
+   recursive extension, and returns an error pattern through the inverse transform.
+3. **Verify.** A slice correction is accepted only if the corrected slice has all-zero syndromes
+   (`dffft_top` is reused as a syndrome checker). Otherwise the slice is left unchanged, so an
+   undecodable slice cannot corrupt the cube.
+4. **Write back.** The corrected slices are reassembled into the cube.
+5. **Repeat.** The three orientations are applied in turn. A sweep that makes no correction means
+   the cube is clean (`done_3d`); if the cube is still changing after `MAX_ITER` sweeps, the decoder
+   stops with `fail_3d` set.
