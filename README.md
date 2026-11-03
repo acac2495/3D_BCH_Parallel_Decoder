@@ -33,3 +33,14 @@ and errors that one orientation cannot correct can be resolved by another.
 
 The design is parameterized by [`N = 15`, `M = 4` (GF(2⁴)), `T = 2`], and the control logic is a
 small FSM around the slice mux, the 2D decoders, and the verification and write-back stages.
+
+## Architecture
+
+<p align="center">
+  <img src="docs/architecture_diagram.png" alt="Block diagram of the parallel 3D BCH decoder" width="800">
+</p>
+
+*Block diagram of the decoder. The cube is cut into N = 15 slices along the orientation selected by
+`pass_idx`, and the slices are decoded in parallel by N copies of the 2D decoder. The decoder's error
+estimate is applied to a slice only if the corrected slice has zero syndromes. The accepted slices are
+then reassembled into the cube. Only lanes 0, 1 and N−1 are drawn. The dashed lines show control signals.*
