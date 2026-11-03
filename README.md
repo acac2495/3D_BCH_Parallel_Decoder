@@ -62,8 +62,7 @@ then reassembled into the cube. Only lanes 0, 1 and N−1 are drawn. The dashed 
 
 | File | Top module | Description |
 |---|---|---|
-| `[top_3d.v]` | `top_3d` | 3D decoder. Splits the cube into N slices per pass, decodes them with N parallel `ccp_top` instances, applies a slice correction only if it passes the check, and writes the slices back. Ports: `clk, rst, start_3d, cube_in, done_3d, fail_3d, iters`. |
-| `[top_3d_alt.v]` | `top_3d_alt` | Same architecture, but a correction is accepted only if the corrected slice has all-zero syndromes (an extra `dffft_top` per slice) instead of an equality test. |
+| `[top_3d.v]` | `top_3d` | 3D decoder. Splits the cube into N slices per pass, decodes them with N parallel `ccp_top` instances, applies a slice correction only if it passes the syndrome check, and writes the slices back. Ports: `clk, rst, start_3d, cube_in, done_3d, fail_3d, iters`. |
 | `[tb_3d.v]` | `tb_3d` | Testbench. Reads `cube_in.hex`, runs the decoder and prints `iters` and `fail_3d`. |
 
 ### `2D_bch_datapath/`
