@@ -1,2 +1,2 @@
-# A highly parallel 3D BCH decoder implementation with slice wise 2D BCH corrections
+# A Parallel 3D BCH decoder implementation with Slice-Wise 2D BCH corrections
 
