@@ -1,12 +1,13 @@
 `include "../2d_bch_datapath/ccp/ccp_top.v"
 `include "../2d_bch_datapath/DFFFT/dffft_top.v"
 
-module top_3d #(parameter N = 15, M = 4, T = 2, MAX_ITER = 100) (clk, rst, start_3d, cube_in, done_3d, fail_3d, iters);
+module top_3d #(parameter N = 15, M = 4, T = 2, MAX_ITER = 100) (clk, rst, start_3d, cube_in, done_3d, fail_3d, iters, cube_out);
     input clk, rst, start_3d;
     input [N*N*N-1:0] cube_in;
 
     output reg [7:0] iters;
     output reg done_3d, fail_3d;
+    output [N*N*N-1:0] cube_out;
 
     reg [N*N-1:0] r_in_2d [0:N-1];  //Input 2d slices
     reg [N*N-1:0] err_2d [0:N-1];   //Ouptput 2d errors from 2d instances
@@ -15,6 +16,8 @@ module top_3d #(parameter N = 15, M = 4, T = 2, MAX_ITER = 100) (clk, rst, start
     reg start_2d;                   //common start signal for 2d decoders
 
     integer i, r, c;
+
+    assign cube_out = cube;
 
     //fsm states
     localparam IDLE = 0;
