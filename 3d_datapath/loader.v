@@ -5,8 +5,8 @@ module loader #(parameter N = 15, M = 4, T = 2) (clk, rst, start_master, leds, d
     output [7:0] leds;
     output reg done_master;
 
-    localparam NUM_VECTORS = 10;
-    localparam MAX_ITER = 100;
+    localparam NUM_VECTORS = 5;
+    localparam MAX_ITER = 5;
 
     (* rom_style = "block" *) reg [N*N*N-1:0] cube_in_mem [0:NUM_VECTORS-1];
     reg [N*N*N-1:0] cube_in;

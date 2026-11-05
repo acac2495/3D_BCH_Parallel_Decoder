@@ -1,7 +1,7 @@
 `include "../2d_bch_datapath/ccp/ccp_top.v"
 `include "../2d_bch_datapath/DFFFT/dffft_top.v"
 
-module top_3d #(parameter N = 15, M = 4, T = 2, MAX_ITER = 100) (clk, rst, start_3d, cube_in, done_3d, fail_3d, iters, cube_out);
+module top_3d #(parameter N = 15, M = 4, T = 2, MAX_ITER = 5) (clk, rst, start_3d, cube_in, done_3d, fail_3d, iters, cube_out);
     input clk, rst, start_3d;
     input [N*N*N-1:0] cube_in;
 
