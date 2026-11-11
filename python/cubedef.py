@@ -359,8 +359,15 @@ def single_pass(cube, o):
     for i in range (N):
         slices.append(extract_slice(cube, o, i))
     errors = []
+    idx = 0
+    print(f"Orientation : {display_orientation(o)}")
     for i in slices:
+        print(f"slice at idx : {idx}")
+        if(i.any() == True):
+            print_bin(i)
+            print_bin(ecc_2d_silent(i))
         errors.append(ecc_2d_silent(i))
+        idx += 1
     corrs = []
     for i in range(N):
         if(check_block_syndrome(slices[i], errors[i]) and slices[i].any()):
@@ -385,6 +392,7 @@ def full_datapath_3d(cube):
     while(iters < MAX):
         sweep_dirty = False
         for o in range(3):
+            print(f"iter : {iters})")
             cube, dirty = single_pass(cube, o)
             print_cube_hex(cube, f"iter {iters} pass {display_orientation(o)}")
             #print(f"Done iter : {iters}, pass : {display_orientation(o)}, Dirty : {dirty}")
