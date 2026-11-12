@@ -24,7 +24,7 @@ module top_interface(clk, rst, start_master, done_master, leds);
 
     wire start_master_sync;
     wire start_master_btn;
-    wire start_masrter_pulse;
+    wire start_master_pulse;
 
     wire rst_sync;
 
