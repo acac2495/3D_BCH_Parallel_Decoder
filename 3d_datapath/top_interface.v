@@ -26,15 +26,6 @@ module top_interface(clk, rst, start_master, done_master, leds);
     wire start_master_btn;
     wire start_master_pulse;
 
-    wire rst_sync;
-
-    synchronizer SYNC_RST (
-        .clk(clk),
-        .rst(rst),
-        .in_sig(rst),
-        .out_sig(rst_sync)
-    );
-
     synchronizer SYNC_START_MASTER (
         .clk(clk),
         .rst(rst),
@@ -52,7 +43,7 @@ module top_interface(clk, rst, start_master, done_master, leds);
 
     top_3d #(.N(N), .M(M), .T(T), .MAX_ITER(MAX_ITER)) TOP_3D_INST (
         .clk(clk),
-        .rst(rst_sync),
+        .rst(rst),
         .start_3d(start_3d),
         .cube_in(cube_in),
         .done_3d(done_3d),
@@ -72,7 +63,7 @@ module top_interface(clk, rst, start_master, done_master, leds);
     reg [2:0] top_state;
 
     always @(posedge clk) begin
-        if(rst_sync) begin
+        if(rst) begin
             top_state <= TOP_IDLE;
             vector_idx <= 0;
             start_3d <= 0;
